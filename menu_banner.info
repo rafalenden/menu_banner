@@ -1,0 +1,6 @@
+name = Menu Banner
+description = Add banner image related with menu link and show it as block.
+core = 7.x
+configure = admin/config/user-interface/menu-banner
+
+dependencies[] = menu
