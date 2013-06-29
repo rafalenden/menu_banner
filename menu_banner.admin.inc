@@ -14,8 +14,9 @@ function menu_banner_settings() {
     '#title' => t('Default banner image'),
     '#type' => 'managed_file',
     '#upload_location' => 'public://menu_banner_images',
-    '#default_value' => isset($form['menu_banner_default_image']) ? $form['menu_banner_default_image']
-       : variable_get('menu_banner_default_image', ''),
+    '#default_value' => isset($form['menu_banner_default_image'])
+      ? $form['menu_banner_default_image']
+      : variable_get('menu_banner_default_image', ''),
   );
   $menu_banner_default_text = variable_get('menu_banner_default_text', array(
     'value' => '',
@@ -41,14 +42,14 @@ function menu_banner_settings() {
 function menu_banner_settings_submit($form, &$form_state) {
   $banner_image_fid = $form_state['values']['menu_banner_default_image'];
 
-  // Add image
+  // Add image.
   if ($banner_image_fid != 0) {
     $file = file_load($banner_image_fid);
     $file->status = FILE_STATUS_PERMANENT;
     file_save($file);
     file_usage_add($file, 'menu_banner', 'banner_default_image', 1);
   }
-  // Delete image
+  // Delete image.
   elseif ($banner_image_fid == 0) {
     $fid = variable_get('menu_banner_default_image', array());
     $file = $fid ? file_load($fid) : FALSE;

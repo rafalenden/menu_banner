@@ -38,7 +38,7 @@ function menu_banner_block_view($delta = '') {
 }
 
 /**
- * Implements hook_contextual_links_view_alter();
+ * Implements hook_contextual_links_view_alter().
  */
 function menu_banner_contextual_links_view_alter(&$element, &$items) {
   if (isset($element['#element']['#block']) && $element['#element']['#block']->module == 'menu_banner') {
@@ -102,7 +102,7 @@ function theme_menu_banner($variables) {
 }
 
 /**
- * Implements hook_permission();
+ * Implements hook_permission().
  */
 function menu_banner_permission() {
   return array(
@@ -130,7 +130,7 @@ function menu_banner_menu() {
 }
 
 /**
- * Implements hook_form_FORM_ID_alter();
+ * Implements hook_form_FORM_ID_alter().
  */
 function menu_banner_form_menu_edit_item_alter(&$form, &$form_state, $form_id) {
   if (!user_access('administer menu banner')) {
@@ -159,8 +159,9 @@ function menu_banner_form_menu_edit_item_alter(&$form, &$form_state, $form_id) {
     '#title' => t('Banner image'),
     '#type' => 'managed_file',
     '#upload_location' => 'public://menu_banner_images',
-    '#default_value' => isset($form['menu_banner']['menu_banner_image']) ? $form['menu_banner']['menu_banner_image']
-       : $banner_image,
+    '#default_value' => isset($form['menu_banner']['menu_banner_image'])
+      ? $form['menu_banner']['menu_banner_image']
+      : $banner_image,
   );
 
   $banner_texts = variable_get('menu_banner_text', array());
@@ -169,10 +170,12 @@ function menu_banner_form_menu_edit_item_alter(&$form, &$form_state, $form_id) {
     '#title' => t('Banner text'),
     '#type' => 'text_format',
     '#default_value' => isset($form['menu_banner']['menu_banner_text']['value'])
-       ? $form['menu_banner']['menu_banner_text']['value'] : $banner_text['value'],
+      ? $form['menu_banner']['menu_banner_text']['value']
+      : $banner_text['value'],
     '#rows' => 3,
-    '#format' => isset($form['menu_banner']['menu_banner_text']['format']) ? $form['menu_banner']['menu_banner_text']['format']
-       : $banner_text['format'],
+    '#format' => isset($form['menu_banner']['menu_banner_text']['format'])
+      ? $form['menu_banner']['menu_banner_text']['format']
+      : $banner_text['format'],
   );
   $form['#submit'][] = 'menu_banner_form_menu_edit_item_submit';
 }
@@ -185,18 +188,18 @@ function menu_banner_form_menu_edit_item_submit(&$form, &$form_state) {
   $banner_image_fid = $form_state['values']['menu_banner_image'];
   $mlid = $form['mlid']['#value'];
 
-  // Add text
+  // Add text.
   $banner_texts = variable_get('menu_banner_text', array());
   if (!empty($banner_text['value'])) {
     $banner_texts[$mlid] = $banner_text;
     variable_set('menu_banner_text', $banner_texts);
   }
-  // Delete text
+  // Delete text.
   else {
     menu_banner_delete_text($mlid);
   }
 
-  // Add image
+  // Add image.
   if ($banner_image_fid != 0) {
     $file = file_load($banner_image_fid);
     $file->status = FILE_STATUS_PERMANENT;
@@ -207,7 +210,7 @@ function menu_banner_form_menu_edit_item_submit(&$form, &$form_state) {
     $banner_images[$mlid] = $file->fid;
     variable_set('menu_banner_image', $banner_images);
   }
-  // Delete image
+  // Delete image.
   elseif ($banner_image_fid == 0) {
     menu_banner_delete_image($mlid);
   }

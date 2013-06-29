@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Implements hook_uninstall();
+ * Implements hook_uninstall().
  */
 function menu_banner_uninstall() {
   $banner_images = variable_get('menu_banner_image', array());
