@@ -18,7 +18,7 @@ function menu_banner_block_view($delta = '') {
   $banner = menu_banner_load_current($trail);
   $active_link = end($trail);
   if (empty($banner['image']) && empty($banner['text'])) {
-    break;
+    return;
   }
   if (!empty($banner['image'])) {
     $image = file_load($banner['image']);
@@ -31,7 +31,7 @@ function menu_banner_block_view($delta = '') {
     '#theme' => 'menu_banner',
     '#banner' => $banner,
     '#image' => $image,
-    '#mlid' => $active_link['mlid'],
+    '#mlid' => isset($active_link['mlid']) ? $active_link['mlid'] : 0,
   );
 
   return $data;
@@ -42,8 +42,7 @@ function menu_banner_block_view($delta = '') {
  */
 function menu_banner_contextual_links_view_alter(&$element, &$items) {
   if (isset($element['#element']['#block']) && $element['#element']['#block']->module == 'menu_banner') {
-    if (user_access('administer menu')) {
-      $mlid = $element['#element']['#mlid'];
+    if (user_access('administer menu') && ($mlid = $element['#element']['#mlid'])) {
       $element['#links']['menu_link_edit'] = array(
         'title' => t('Edit active menu link'),
         'href' => url('admin/structure/menu/item/' . $mlid . '/edit', array(
@@ -159,9 +158,8 @@ function menu_banner_form_menu_edit_item_alter(&$form, &$form_state, $form_id) {
     '#title' => t('Banner image'),
     '#type' => 'managed_file',
     '#upload_location' => 'public://menu_banner_images',
-    '#default_value' => isset($form['menu_banner']['menu_banner_image'])
-      ? $form['menu_banner']['menu_banner_image']
-      : $banner_image,
+    '#default_value' => isset($form['menu_banner']['menu_banner_image']) ? $form['menu_banner']['menu_banner_image']
+       : $banner_image,
   );
 
   $banner_texts = variable_get('menu_banner_text', array());
@@ -170,12 +168,10 @@ function menu_banner_form_menu_edit_item_alter(&$form, &$form_state, $form_id) {
     '#title' => t('Banner text'),
     '#type' => 'text_format',
     '#default_value' => isset($form['menu_banner']['menu_banner_text']['value'])
-      ? $form['menu_banner']['menu_banner_text']['value']
-      : $banner_text['value'],
+       ? $form['menu_banner']['menu_banner_text']['value'] : $banner_text['value'],
     '#rows' => 3,
-    '#format' => isset($form['menu_banner']['menu_banner_text']['format'])
-      ? $form['menu_banner']['menu_banner_text']['format']
-      : $banner_text['format'],
+    '#format' => isset($form['menu_banner']['menu_banner_text']['format']) ? $form['menu_banner']['menu_banner_text']['format']
+       : $banner_text['format'],
   );
   $form['#submit'][] = 'menu_banner_form_menu_edit_item_submit';
 }
