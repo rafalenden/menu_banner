@@ -5,7 +5,7 @@
  */
 function menu_banner_block_info() {
   $blocks['main'] = array(
-    'info' => t('Menu Banner'),
+    'info' => t('Menu banner'),
   );
   return $blocks;
 }
@@ -26,7 +26,7 @@ function menu_banner_block_view($delta = '') {
   else {
     $image = array();
   }
-  $data['subject'] = t('Menu Banner');
+  $data['subject'] = t('Menu banner');
   $data['content'] = array(
     '#theme' => 'menu_banner',
     '#banner' => $banner,
@@ -53,7 +53,7 @@ function menu_banner_contextual_links_view_alter(&$element, &$items) {
     }
     if (user_access('administer menu banner')) {
       $element['#links']['menu_banner_setting'] = array(
-        'title' => t('Menu Banner settings'),
+        'title' => t('Menu banner settings'),
         'href' => url('admin/config/user-interface/menu-banner', array(
           'absolute' => TRUE,
           'query' => drupal_get_destination(),
@@ -106,7 +106,7 @@ function theme_menu_banner($variables) {
 function menu_banner_permission() {
   return array(
     'administer menu banner' => array(
-      'title' => t('Administer Menu Banner settings'),
+      'title' => t('Administer Menu banner settings'),
     ),
   );
 }
@@ -117,8 +117,8 @@ function menu_banner_permission() {
 function menu_banner_menu() {
   $items = array();
   $items['admin/config/user-interface/menu-banner'] = array(
-    'title' => 'Menu Banner',
-    'description' => 'Menu Banner settings.',
+    'title' => 'Menu banner',
+    'description' => 'Menu banner settings.',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('menu_banner_settings'),
     'access arguments' => array('administer menu banner'),
@@ -136,7 +136,7 @@ function menu_banner_form_menu_edit_item_alter(&$form, &$form_state, $form_id) {
     return;
   }
   $form['menu_banner'] = array(
-    '#title' => t('Menu Banner'),
+    '#title' => t('Menu banner'),
     '#type' => 'fieldset',
     '#callapsible' => FALSE,
   );
@@ -274,7 +274,7 @@ function menu_banner_load_current($trail = array()) {
 
 /**
  * Delete menu banner.
- * 
+ *
  * @param int $mlid
  *   Menu link ID related with banner.
  */
@@ -285,7 +285,7 @@ function menu_banner_delete($mlid) {
 
 /**
  * Delete image of menu banner.
- * 
+ *
  * @param int $mlid
  *   Menu link ID related with banner.
  */
@@ -304,7 +304,7 @@ function menu_banner_delete_image($mlid) {
 
 /**
  * Delete text of menu banner.
- * 
+ *
  * @param int $mlid
  *   Menu link ID related with banner.
  */
