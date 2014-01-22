@@ -2,7 +2,7 @@
 
 /**
  * @file
- * Includes only functions used in administration pages.
+ * Module settings and configuration administration UI.
  */
 
 /**
@@ -19,7 +19,7 @@ function menu_banner_settings() {
       : variable_get('menu_banner_default_image', ''),
     '#upload_validators' => array(
       'file_validate_extensions' => array('png gif jpg'),
-//      'file_validate_size' => array(MAX_FILE_SIZE * 1024 * 1024),
+      // 'file_validate_size' => array(MAX_FILE_SIZE * 1024 * 1024),
     ),
   );
   $menu_banner_default_text = variable_get('menu_banner_default_text', array(

@@ -1,6 +1,34 @@
 <?php
 
 /**
+ * Implements hook_menu().
+ */
+function menu_banner_menu() {
+  $items = array();
+  $items['admin/config/user-interface/menu-banner'] = array(
+    'title' => 'Menu banner',
+    'description' => 'Menu banner settings.',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('menu_banner_settings'),
+    'access arguments' => array('administer menu banner'),
+    'file' => 'menu_banner.admin.inc',
+    'context' => MENU_CONTEXT_INLINE,
+  );
+  return $items;
+}
+
+/**
+ * Implements hook_permission().
+ */
+function menu_banner_permission() {
+  return array(
+    'administer menu banner' => array(
+      'title' => t('Administer Menu banner settings'),
+    ),
+  );
+}
+
+/**
  * Implements hook_block_info().
  */
 function menu_banner_block_info() {
@@ -42,7 +70,8 @@ function menu_banner_block_view($delta = '') {
  */
 function menu_banner_contextual_links_view_alter(&$element, &$items) {
   if (isset($element['#element']['#block']) && $element['#element']['#block']->module == 'menu_banner') {
-    if (user_access('administer menu') && ($mlid = $element['#element']['#mlid'])) {
+    $mlid = $element['#element']['#mlid'];
+    if (user_access('administer menu') && $mlid) {
       $element['#links']['menu_link_edit'] = array(
         'title' => t('Edit active menu link'),
         'href' => url('admin/structure/menu/item/' . $mlid . '/edit', array(
@@ -98,34 +127,6 @@ function theme_menu_banner($variables) {
   }
   $output .= '</div>';
   return $output;
-}
-
-/**
- * Implements hook_permission().
- */
-function menu_banner_permission() {
-  return array(
-    'administer menu banner' => array(
-      'title' => t('Administer Menu banner settings'),
-    ),
-  );
-}
-
-/**
- * Implements hook_menu().
- */
-function menu_banner_menu() {
-  $items = array();
-  $items['admin/config/user-interface/menu-banner'] = array(
-    'title' => 'Menu banner',
-    'description' => 'Menu banner settings.',
-    'page callback' => 'drupal_get_form',
-    'page arguments' => array('menu_banner_settings'),
-    'access arguments' => array('administer menu banner'),
-    'file' => 'menu_banner.admin.inc',
-    'context' => MENU_CONTEXT_INLINE,
-  );
-  return $items;
 }
 
 /**
@@ -214,6 +215,13 @@ function menu_banner_form_menu_edit_item_submit(&$form, &$form_state) {
 
 /**
  * Loads banner for given menu link ID.
+ *
+ * @param int $mlid
+ *   Menu link ID.
+ * @param bool $default
+ *   Provide default banneri if there is no banner for requested menu link.
+ *
+ * @return array
  */
 function menu_banner_load($mlid, $default = TRUE) {
   $banner_images = variable_get('menu_banner_image', array());
@@ -241,6 +249,9 @@ function menu_banner_load_default() {
   return array('image' => $banner_image, 'text' => $banner_text);
 }
 
+/**
+ * Get current page active trail.
+ */
 function menu_banner_get_active_trail() {
   if (drupal_is_front_page()) {
     $site_frontpage = variable_get('site_frontpage');
@@ -254,7 +265,9 @@ function menu_banner_get_active_trail() {
 
 /**
  * Load banner for current menu item.
- * @param type $trail
+ *
+ * @param array $trail
+ *
  * @return array
  *   - image
  *   - text
