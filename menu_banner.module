@@ -277,6 +277,8 @@ function menu_banner_load_current($trail = array()) {
   if (empty($trail)) {
     $trail = menu_banner_get_active_trail();
   }
+  // Reverse the array so that we start with deeper links
+  $trail = array_reverse($trail);
   foreach ($trail as $menu_link) {
     if (isset($menu_link['mlid']) && isset($conf['menu_banner_image'][$menu_link['mlid']])) {
       return menu_banner_load($menu_link['mlid'], FALSE);
